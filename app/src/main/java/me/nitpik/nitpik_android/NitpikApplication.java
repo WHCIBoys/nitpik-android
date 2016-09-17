@@ -8,7 +8,10 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.MaterialModule;
 
+import java.util.List;
+
 import me.nitpik.nitpik_android.api.APIService;
+import me.nitpik.nitpik_android.models.Friendship;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -18,6 +21,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class NitpikApplication extends Application {
     private APIService apiService;
+
+    // TODO: Use a hashmap of <friendshipId => Friendship> to make it easier
+    // to potentially update friendship cache at a later date.
+    List<Friendship> friendships;
 
     public void onCreate() {
         super.onCreate();
@@ -43,6 +50,14 @@ public class NitpikApplication extends Application {
 
     public APIService getAPIService() {
         return apiService;
+    }
+
+    public List<Friendship> getFriendships() {
+        return friendships;
+    }
+
+    public void setFriendships(List<Friendship> friendships) {
+        this.friendships = friendships;
     }
 }
 

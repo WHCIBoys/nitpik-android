@@ -13,7 +13,22 @@
         "name": "Maaz Ali",
         "facebookId": "10207490889771713"
       },
-      "isAnon": false
+      "isAnonymous": false
+    },
+    {
+      "author": {
+        "facebookId": "10207490889771713",
+        "id": 1,
+        "name": "Maaz Ali"
+      },
+      "content": "Moar testing?",
+      "id": 2,
+      "isAnonymous": true,
+      "user": {
+        "facebookId": "10205270670229481",
+        "id": 2,
+        "name": "Brandon Bowen"
+      }
     }
   ],
   "friendships": [

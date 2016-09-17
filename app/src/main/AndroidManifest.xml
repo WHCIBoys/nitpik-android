@@ -16,6 +16,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+
+        <!--<activity-->
+            <!--android:name="me.tbbr.tbbr.LoginActivity"-->
+            <!--android:label="@string/title_login"-->
+            <!--android:theme="@style/AppTheme.NoActionBar"/>-->
+
+
+        <activity
+            android:name="me.nitpik.nitpik_android.ProfileActivity"
+            android:label="@string/title_profile_activity"
+            android:parentActivityName="me.nitpik.nitpik_android.FriendshipListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.nitpik.nitpik_android.FriendshipListActivity" />
+        </activity>
     </application>
 
 </manifest>

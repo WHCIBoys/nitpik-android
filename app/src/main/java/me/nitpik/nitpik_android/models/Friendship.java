@@ -4,6 +4,7 @@ package me.nitpik.nitpik_android.models;
  * Created by maazali on 2016-09-17.
  */
 public class Friendship {
+    private int id;
     private User user;
     private User friend;
 
@@ -18,5 +19,4 @@ public class Friendship {
     public void setFriend(User friend) {
         this.friend = friend;
     }
-
 }

@@ -4,9 +4,9 @@ package me.nitpik.nitpik_android.models;
  * Created by maazali on 2016-09-16.
  */
 public class User {
+    private int id;
     private String name;
     private String facebookId;
-
 
     public void setName(String name) {
         this.name = name;
@@ -28,7 +28,6 @@ public class User {
                 return "https://graph.facebook.com/" + facebookId + "/picture?type=large";
         }
     }
-
 
     @Override
     public String toString() {

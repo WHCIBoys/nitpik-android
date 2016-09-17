@@ -75,6 +75,7 @@ public class FriendshipListActivity extends AppCompatActivity {
                     assert recyclerView != null;
 
                     ((RecyclerView)recyclerView).addItemDecoration(new HorizontalDividerItemDecoration.Builder(FriendshipListActivity.this).build());
+                    app.setFriendships(response.body());
                     setupRecyclerView((RecyclerView)recyclerView, response.body());
                 }
             }
@@ -118,20 +119,20 @@ public class FriendshipListActivity extends AppCompatActivity {
 
             Picasso.with(FriendshipListActivity.this)
                     .load(holder.mItem.getFriend().getAvatarUrl("normal"))
-//                    .placeholder(context.getResources().getDrawable(R.drawable.default_profile_picture))
-//                    .error(context.getResources().getDrawable(R.drawable.default_profile_picture))
+                    .placeholder(context.getResources().getDrawable(R.drawable.default_profile_picture))
+                    .error(context.getResources().getDrawable(R.drawable.default_profile_picture))
                     .into(holder.friendImage);
 
-//            holder.cardView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Context context = v.getContext();
-//                    Intent intent = new Intent(context, FriendshipDetailActivity.class);
-//                    intent.putExtra("item_index", index);
-//
-//                    context.startActivity(intent);
-//                }
-//            });
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    intent.putExtra("item_index", index);
+
+                    context.startActivity(intent);
+                }
+            });
         }
 
         @Override
