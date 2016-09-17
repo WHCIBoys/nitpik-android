@@ -39,7 +39,10 @@ public class NitpikApplication extends Application {
                 .build();
 
         apiService = retrofit.create(APIService.class);
+    }
 
+    public APIService getAPIService() {
+        return apiService;
     }
 }
 

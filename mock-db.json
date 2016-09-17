@@ -18,7 +18,28 @@
         "name": "Maaz"
       },
       "friend": {
-        "name": "Brandon"
+        "name": "Brandon Bowen",
+        "facebookId": "10205270670229481"
+      }
+    },
+    {
+      "id": 1,
+      "user": {
+        "name": "Maaz"
+      },
+      "friend": {
+        "name": "Mandish Shah",
+        "facebookId": "10207412737774454"
+      }
+    },
+    {
+      "id": 1,
+      "user": {
+        "name": "Maaz"
+      },
+      "friend": {
+        "name": "Ramanpreet Nara",
+        "facebookId": "703342513133853"
       }
     }
   ]

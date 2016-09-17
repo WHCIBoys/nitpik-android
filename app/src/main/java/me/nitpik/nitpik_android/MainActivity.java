@@ -35,27 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final NitpikApplication app = (NitpikApplication) getApplication();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Iconify.with(new MaterialModule());
-
-        Stetho.initializeWithDefaults(this);
-
-        FacebookSdk.sdkInitialize(getApplicationContext());
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addNetworkInterceptor(new StethoInterceptor())
-                .build();
-
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getResources().getString(R.string.base_url))
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build();
-
-        final APIService apiService = retrofit.create(APIService.class);
 
         AppCompatButton btn = (AppCompatButton) findViewById(R.id.get_friendships);
 
@@ -64,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Log.d("INFO", "get friendships button was clicked :D!");
-                    Call<List<Friendship>> friendshipsReq = apiService.getFriendships();
+                    Call<List<Friendship>> friendshipsReq = app.getAPIService().getFriendships();
 
                     friendshipsReq.enqueue(new Callback<List<Friendship>>() {
                         @Override
