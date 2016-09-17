@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -38,13 +40,42 @@ public class FriendshipListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        NitpikApplication app = (NitpikApplication) getApplication();
-
         setContentView(R.layout.activity_friendship_list);
         makeFriendshipRequest();
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        toolbar.setTitle(getTitle());
+        setToolbar();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.friendship_list_actions, menu);
+        MenuItem myProfile = menu.findItem(R.id.action_my_profile);
+        myProfile.setIcon(
+            new IconDrawable(this, MaterialIcons.md_account_circle)
+                .colorRes(R.color.colorAccent)
+                .actionBarSize()
+        );
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_my_profile:
+                Intent intent = new Intent(this, ProfileActivity.class);
+                intent.putExtra("isUserOnOwnProfile", true);
+                this.startActivity(intent);
+                return true;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    private void setToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.friendship_appbar);
+        setSupportActionBar(toolbar);
     }
 
     private void makeFriendshipRequest() {
@@ -128,6 +159,7 @@ public class FriendshipListActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Context context = v.getContext();
                     Intent intent = new Intent(context, ProfileActivity.class);
+                    intent.putExtra("isUserOnOwnProfile", false);
                     intent.putExtra("item_index", index);
 
                     context.startActivity(intent);

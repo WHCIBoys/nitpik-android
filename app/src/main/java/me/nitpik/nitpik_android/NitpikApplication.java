@@ -12,6 +12,7 @@ import java.util.List;
 
 import me.nitpik.nitpik_android.api.APIService;
 import me.nitpik.nitpik_android.models.Friendship;
+import me.nitpik.nitpik_android.models.User;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -25,6 +26,7 @@ public class NitpikApplication extends Application {
     // TODO: Use a hashmap of <friendshipId => Friendship> to make it easier
     // to potentially update friendship cache at a later date.
     List<Friendship> friendships;
+    User currentUser;
 
     public void onCreate() {
         super.onCreate();
@@ -57,7 +59,15 @@ public class NitpikApplication extends Application {
     }
 
     public void setFriendships(List<Friendship> friendships) {
+        if (friendships.size() > 0) {
+            // TODO: Replace this when we've implemented authentication
+            currentUser = friendships.get(0).getUser();
+        }
         this.friendships = friendships;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
     }
 }
 

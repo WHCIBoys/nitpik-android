@@ -29,6 +29,51 @@
         "id": 2,
         "name": "Brandon Bowen"
       }
+    },
+    {
+      "author": {
+        "facebookId": "10207490889771713",
+        "id": 1,
+        "name": "Maaz Ali"
+      },
+      "content": "Testing if this works?\n",
+      "id": 3,
+      "isAnonymous": true,
+      "user": {
+        "facebookId": "10205270670229481",
+        "id": 2,
+        "name": "Brandon Bowen"
+      }
+    },
+    {
+      "author": {
+        "facebookId": "10207490889771713",
+        "id": 1,
+        "name": "Maaz Ali"
+      },
+      "content": "You're a bitch sometimes.",
+      "id": 4,
+      "isAnonymous": true,
+      "user": {
+        "facebookId": "10205270670229481",
+        "id": 2,
+        "name": "Brandon Bowen"
+      }
+    },
+    {
+      "author": {
+        "facebookId": "10207490889771713",
+        "id": 1,
+        "name": "Maaz Ali"
+      },
+      "content": "You suck",
+      "id": 5,
+      "isAnonymous": true,
+      "user": {
+        "facebookId": "10205270670229481",
+        "id": 2,
+        "name": "Brandon Bowen"
+      }
     }
   ],
   "friendships": [

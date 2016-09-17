@@ -26,7 +26,7 @@ public interface APIService {
 //    Call<Friendship> getFriendship(@Path("id") String friendshipId);
 
     @GET("nits")
-    Call<List<Nit>> getNits(@Query("authorId") int authorId, @Query("userId") int userId);
+    Call<List<Nit>> getNits(@Query("authorId") Integer authorId, @Query("userId") Integer userId);
 
     @POST("nits")
     Call<Nit> createNit(@Body Nit nit);

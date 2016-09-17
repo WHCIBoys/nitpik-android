@@ -1,23 +1,32 @@
 package me.nitpik.nitpik_android;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
+
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import jp.wasabeef.picasso.transformations.BlurTransformation;
 import me.nitpik.nitpik_android.api.APIService;
-import me.nitpik.nitpik_android.models.Friendship;
 import me.nitpik.nitpik_android.models.Nit;
+import me.nitpik.nitpik_android.models.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,7 +36,8 @@ import retrofit2.Response;
  */
 public class ProfileActivity extends AppCompatActivity {
 
-    private Friendship friendship;
+    private User profileUser;
+    private boolean isUserOnOwnProfile;
 
     private AppCompatButton postNitBtn;
     private EditText nitContentEditView;
@@ -39,9 +49,24 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile_view);
 
         int position = getIntent().getIntExtra("item_index", 0);
+        isUserOnOwnProfile = getIntent().getBooleanExtra("isUserOnOwnProfile", false);
         NitpikApplication app = (NitpikApplication) getApplication();
+        LinearLayout nitCreateLayout = (LinearLayout) findViewById(R.id.nit_create_layout);
+        RecyclerView nitList = (RecyclerView) findViewById(R.id.nit_list);
+        assert nitCreateLayout != null;
+        assert nitList != null;
 
-        friendship = (Friendship) app.getFriendships().get(position);
+        if (isUserOnOwnProfile) {
+            // We get the currently logged in user
+            // TODO: store the currently logged in user in the application
+            profileUser = app.getFriendships().get(0).getUser();
+            nitCreateLayout.setVisibility(View.INVISIBLE);
+            nitList.setVisibility(View.VISIBLE);
+        } else {
+            profileUser = app.getFriendships().get(position).getFriend();
+            nitCreateLayout.setVisibility(View.VISIBLE);
+            nitList.setVisibility(View.INVISIBLE);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
@@ -56,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
         CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
         if (appBarLayout != null) {
-            appBarLayout.setTitle(friendship.getFriend().getName());
+            appBarLayout.setTitle(profileUser.getName());
         }
 
         ImageView backdrop = (ImageView) findViewById(R.id.friend_image_backdrop);
@@ -65,20 +90,20 @@ public class ProfileActivity extends AppCompatActivity {
         nitContentEditView = (EditText) findViewById(R.id.nit_content_edit_view);
 
         Picasso.with(this)
-                .load(friendship.getFriend().getAvatarUrl("normal"))
+                .load(profileUser.getAvatarUrl("normal"))
                 .transform(new BlurTransformation(this, 25))
                 .placeholder(this.getResources().getDrawable(R.drawable.default_profile_picture))
                 .error(this.getResources().getDrawable(R.drawable.default_profile_picture))
                 .into(backdrop);
 
         Picasso.with(ProfileActivity.this)
-                .load(friendship.getFriend().getAvatarUrl("normal"))
+                .load(profileUser.getAvatarUrl("normal"))
                 .placeholder(this.getResources().getDrawable(R.drawable.default_profile_picture))
                 .error(this.getResources().getDrawable(R.drawable.default_profile_picture))
                 .into(mainImage);
 
         Picasso.with(ProfileActivity.this)
-                .load(friendship.getUser().getAvatarUrl("normal"))
+                .load(app.getCurrentUser().getAvatarUrl("normal"))
                 .placeholder(this.getResources().getDrawable(R.drawable.default_profile_picture))
                 .error(this.getResources().getDrawable(R.drawable.default_profile_picture))
                 .into(authorImg);
@@ -86,12 +111,98 @@ public class ProfileActivity extends AppCompatActivity {
         setupNitPostBtn();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (isUserOnOwnProfile) {
+            makeNitRequest();
+        }
+//        makeFriendshipRequest();
+    }
+
+    private void makeNitRequest() {
+        final NitpikApplication app = (NitpikApplication) getApplication();
+        APIService service = app.getAPIService();
+
+        Call<List<Nit>> nitsReq = service.getNits(app.getCurrentUser().getId(), null);
+
+
+        nitsReq.enqueue(new Callback<List<Nit>>() {
+            @Override
+            public void onResponse(Call<List<Nit>> call, Response<List<Nit>> response) {
+
+                if (response.body() == null) {
+                    Toast.makeText(getApplicationContext(), "Response body was null", Toast.LENGTH_LONG).show();
+                } else {
+                    View recyclerView = findViewById(R.id.nit_list);
+                    assert recyclerView != null;
+
+                    ((RecyclerView)recyclerView).addItemDecoration(
+                            new HorizontalDividerItemDecoration.Builder(ProfileActivity.this)
+                                    .build());
+
+                    setupRecyclerView((RecyclerView) recyclerView, response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Nit>> call, Throwable t) {
+                Toast toast = Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG);
+                toast.show();
+
+            }
+        });
+
+    }
+
+//    private void makeFriendshipRequest() {
+//        final TBBRApplication app = (TBBRApplication) getApplication();
+//        APIService service = app.getAPIService();
+//
+//        Call<JSONApiObject> friendshipReq = service.getFriendship(friendship.getId());
+//
+//
+//        friendshipReq.enqueue(new Callback<JSONApiObject>() {
+//            @Override
+//            public void onResponse(Call<JSONApiObject> call, Response<JSONApiObject> response) {
+//
+//                if (response.body() == null) {
+//                    handleNullBody(response);
+//                } else {
+//                    List<Resource> friendshipList = response.body().getData();
+//
+//                    friendship = (Friendship) friendshipList.get(0);
+//
+//                    balance.setText(friendship.getFormattedBalance());
+//                    balance.setTextColor(friendship.getBalanceColor());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<JSONApiObject> call, Throwable t) {
+//                Toast toast = Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG);
+//                toast.show();
+//
+//            }
+//        });
+//
+//    }
+
+
+
     private void setupNitPostBtn() {
         postNitBtn = (AppCompatButton) findViewById(R.id.post_nit_btn);
 
         postNitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (isUserOnOwnProfile) {
+                    Toast.makeText(getApplicationContext(), "Can't create a nit against yourself!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                NitpikApplication app = ((NitpikApplication)getApplication());
+
                 Boolean isAnonymous = true;
                 String nitContent = nitContentEditView.getText().toString();
 
@@ -100,10 +211,10 @@ public class ProfileActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (friendship != null) {
-                    Nit newNit = new Nit(friendship.getUser(), friendship.getFriend(), nitContent, isAnonymous);
+                if (profileUser != null) {
+                    Nit newNit = new Nit(app.getCurrentUser(), profileUser, nitContent, isAnonymous);
 
-                    Toast.makeText(getApplicationContext(), "Posting nit...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Posting nit...", Toast.LENGTH_SHORT).show();
 
                     makeCreateNitRequest(newNit);
 
@@ -133,7 +244,7 @@ public class ProfileActivity extends AppCompatActivity {
 //                        Snackbar.make(layoutContainer, "Something went wrong", Snackbar.LENGTH_LONG).show();
 //                    }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Nit was posted", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Nit successfully posted", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -143,5 +254,55 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<Nit> nits) {
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(nits));
+    }
+
+    public class SimpleItemRecyclerViewAdapter
+            extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
+
+        private List<Nit> nits;
+
+        public SimpleItemRecyclerViewAdapter(List<Nit> nits) {
+            this.nits = nits;
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.nit_item_view, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(final ViewHolder holder, int position) {
+            holder.mItem = this.nits.get(position);
+            String content = holder.mItem.getContent();
+            boolean isAnonymous = holder.mItem.getIsAnonymous();
+
+            holder.content.setText(content);
+        }
+
+        @Override
+        public int getItemCount() {
+            return nits.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            public final LinearLayout cardView;
+            public final TextView content;
+
+            public Nit mItem;
+
+            public ViewHolder(View view) {
+                super(view);
+                cardView = (LinearLayout) view.findViewById(R.id.nit_card);
+                content = (TextView) view.findViewById(R.id.nit_content);
+            }
+        }
+    }
+
 
 }
