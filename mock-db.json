@@ -1,0 +1,25 @@
+{
+  "nits": [
+    {
+      "id": 1,
+      "content": "Sup brandon",
+      "author": {
+        "name": "Maaz"
+      },
+      "user": {
+        "name": "Brandon"
+      }
+    }
+  ],
+  "friendships": [
+    {
+      "id": 1,
+      "user": {
+        "name": "Maaz"
+      },
+      "friend": {
+        "name": "Brandon"
+      }
+    }
+  ]
+}
