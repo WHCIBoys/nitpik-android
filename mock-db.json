@@ -2,42 +2,56 @@
   "nits": [
     {
       "id": 1,
-      "content": "Sup brandon",
+      "content": "Sup Maaz",
       "author": {
-        "name": "Maaz"
+        "id": 2,
+        "name": "Brandon Bowen",
+        "facebookId": "10205270670229481"
       },
       "user": {
-        "name": "Brandon"
-      }
+        "id": 1,
+        "name": "Maaz Ali",
+        "facebookId": "10207490889771713"
+      },
+      "isAnon": false
     }
   ],
   "friendships": [
     {
       "id": 1,
       "user": {
-        "name": "Maaz"
+        "id": 1,
+        "name": "Maaz Ali",
+        "facebookId": "10207490889771713"
       },
       "friend": {
+        "id": 2,
         "name": "Brandon Bowen",
         "facebookId": "10205270670229481"
       }
     },
     {
-      "id": 1,
+      "id": 2,
       "user": {
-        "name": "Maaz"
+        "id": 1,
+        "name": "Maaz Ali",
+        "facebookId": "10207490889771713"
       },
       "friend": {
+        "id": 3,
         "name": "Mandish Shah",
         "facebookId": "10207412737774454"
       }
     },
     {
-      "id": 1,
+      "id": 3,
       "user": {
-        "name": "Maaz"
+        "id": 1,
+        "name": "Maaz Ali",
+        "facebookId": "10207490889771713"
       },
       "friend": {
+        "id": 4,
         "name": "Ramanpreet Nara",
         "facebookId": "703342513133853"
       }
