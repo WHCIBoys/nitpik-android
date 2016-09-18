@@ -117,7 +117,6 @@ public class ProfileActivity extends AppCompatActivity {
         if (isUserOnOwnProfile) {
             makeNitRequest();
         }
-//        makeFriendshipRequest();
     }
 
     private void makeNitRequest() {
@@ -154,41 +153,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
     }
-
-//    private void makeFriendshipRequest() {
-//        final TBBRApplication app = (TBBRApplication) getApplication();
-//        APIService service = app.getAPIService();
-//
-//        Call<JSONApiObject> friendshipReq = service.getFriendship(friendship.getId());
-//
-//
-//        friendshipReq.enqueue(new Callback<JSONApiObject>() {
-//            @Override
-//            public void onResponse(Call<JSONApiObject> call, Response<JSONApiObject> response) {
-//
-//                if (response.body() == null) {
-//                    handleNullBody(response);
-//                } else {
-//                    List<Resource> friendshipList = response.body().getData();
-//
-//                    friendship = (Friendship) friendshipList.get(0);
-//
-//                    balance.setText(friendship.getFormattedBalance());
-//                    balance.setTextColor(friendship.getBalanceColor());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<JSONApiObject> call, Throwable t) {
-//                Toast toast = Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG);
-//                toast.show();
-//
-//            }
-//        });
-//
-//    }
-
-
 
     private void setupNitPostBtn() {
         postNitBtn = (AppCompatButton) findViewById(R.id.post_nit_btn);
@@ -280,7 +244,7 @@ public class ProfileActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = this.nits.get(position);
             String content = holder.mItem.getContent();
-            boolean isAnonymous = holder.mItem.getIsAnonymous();
+//            boolean isAnonymous = holder.mItem.getIsAnonymous();
 
             holder.content.setText(content);
         }
