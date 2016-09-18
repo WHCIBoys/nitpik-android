@@ -4,7 +4,7 @@ package me.nitpik.nitpik_android.models;
  * Created by maazali on 2016-09-17.
  */
 public class Nit {
-    private int id;
+    private String id;
     private User author;
     private User user;
     private String content;
