@@ -1,5 +1,6 @@
 package me.nitpik.nitpik_android;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -19,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -205,15 +207,15 @@ public class ProfileActivity extends AppCompatActivity {
 
                 if (response.body() == null) {
                     Toast.makeText(getApplicationContext(), "Nit was not created", Toast.LENGTH_LONG).show();
-//                    if (response.raw().code() == 401) {
-//                        LoginManager.getInstance().logOut();
-//
-//                        Intent loginIntent = new Intent(ProfileActivity.this, LoginActivity.class);
-//                        ProfileActivity.this.startActivity(loginIntent);
-//                        ProfileActivity.this.finish();
-//                    } else {
-//                        Snackbar.make(layoutContainer, "Something went wrong", Snackbar.LENGTH_LONG).show();
-//                    }
+                    if (response.raw().code() == 401) {
+                        LoginManager.getInstance().logOut();
+
+                        Intent loginIntent = new Intent(ProfileActivity.this, LoginActivity.class);
+                        ProfileActivity.this.startActivity(loginIntent);
+                        ProfileActivity.this.finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), "Nit successfully posted", Toast.LENGTH_LONG).show();
                 }

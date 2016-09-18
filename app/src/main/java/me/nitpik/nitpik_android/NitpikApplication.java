@@ -8,12 +8,16 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.MaterialModule;
 
+import java.io.IOException;
 import java.util.List;
 
 import me.nitpik.nitpik_android.api.APIService;
 import me.nitpik.nitpik_android.models.Friendship;
+import me.nitpik.nitpik_android.models.Token;
 import me.nitpik.nitpik_android.models.User;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -38,6 +42,32 @@ public class NitpikApplication extends Application {
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
+                .build();
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getResources().getString(R.string.base_url))
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build();
+
+        apiService = retrofit.create(APIService.class);
+    }
+
+    public void logUserIn(Token token) {
+        final String jwtToken = token.getJWTToken();
+        Interceptor authorizationInterceptor = new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request newRequest = chain.request().newBuilder().addHeader("Authorization", jwtToken).build();
+                return chain.proceed(newRequest);
+            }
+        };
+
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addNetworkInterceptor(new StethoInterceptor())
+                .addInterceptor(authorizationInterceptor)
                 .build();
 
 

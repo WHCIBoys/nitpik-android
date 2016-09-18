@@ -93,13 +93,13 @@ public class FriendshipListActivity extends AppCompatActivity {
                     Toast err = Toast.makeText(getApplicationContext(), response.errorBody().toString(), Toast.LENGTH_LONG);
                     err.show();
 
-//                    if (response.raw().code() == 401) {
-//                        LoginManager.getInstance().logOut();
-//
-//                        Intent loginIntent = new Intent(FriendshipListActivity.this, LoginActivity.class);
-//                        FriendshipListActivity.this.startActivity(loginIntent);
-//                        FriendshipListActivity.this.finish();
-//                    }
+                    if (response.raw().code() == 401) {
+                        LoginManager.getInstance().logOut();
+
+                        Intent loginIntent = new Intent(FriendshipListActivity.this, LoginActivity.class);
+                        FriendshipListActivity.this.startActivity(loginIntent);
+                        FriendshipListActivity.this.finish();
+                    }
 
                 } else {
                     View recyclerView = findViewById(R.id.friendship_list);

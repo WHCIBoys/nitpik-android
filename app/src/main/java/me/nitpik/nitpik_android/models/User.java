@@ -4,11 +4,11 @@ package me.nitpik.nitpik_android.models;
  * Created by maazali on 2016-09-16.
  */
 public class User {
-    private int id;
+    private String  id;
     private String name;
     private String facebookId;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 

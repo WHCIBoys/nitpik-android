@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">nitpik</string>
-    <string name="base_url">http://10.0.2.2:3000</string>
+    <string name="base_url">http://api.nitpik.me</string>
 
     <string name="title_profile_activity">Profile</string>
     <string name="title_login">Login</string>
