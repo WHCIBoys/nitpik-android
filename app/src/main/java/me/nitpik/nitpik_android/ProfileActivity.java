@@ -2,7 +2,9 @@ package me.nitpik.nitpik_android;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -78,11 +80,14 @@ public class ProfileActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        CollapsingToolbarLayout toolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        CoordinatorLayout profileViewLayout = (CoordinatorLayout) findViewById(R.id.profile_view_layout);
 
-        if (appBarLayout != null) {
-            appBarLayout.setTitle(profileUser.getName());
-        }
+        assert toolbarLayout != null;
+        assert appBarLayout != null;
+
+        toolbarLayout.setTitle(profileUser.getName());
 
         ImageView backdrop = (ImageView) findViewById(R.id.friend_image_backdrop);
         CircleImageView mainImage = (CircleImageView) findViewById(R.id.friendship_page_main_img);
@@ -108,7 +113,9 @@ public class ProfileActivity extends AppCompatActivity {
                 .error(this.getResources().getDrawable(R.drawable.default_profile_picture))
                 .into(authorImg);
 
+        appBarLayout.setExpanded(false);
         setupNitPostBtn();
+
     }
 
     @Override
@@ -218,6 +225,9 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<Nit> nits) {

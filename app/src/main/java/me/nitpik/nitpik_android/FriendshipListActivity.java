@@ -51,7 +51,7 @@ public class FriendshipListActivity extends AppCompatActivity {
         MenuItem myProfile = menu.findItem(R.id.action_my_profile);
         myProfile.setIcon(
             new IconDrawable(this, MaterialIcons.md_account_circle)
-                .colorRes(R.color.colorAccent)
+                .colorRes(R.color.grey50)
                 .actionBarSize()
         );
         return true;
